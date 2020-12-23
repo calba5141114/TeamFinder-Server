@@ -1,10 +1,19 @@
 const mongoose = require('mongoose');
 
 const InfoSchema = new mongoose.Schema({
-Archetpye:{
+_id:{
+    type:String,
+    required:true
+}
+,
+Archetype:{
     type:String,
     required:true,
 
+},
+Player:{
+    type:String,
+    required:true
 },
 Overall:{
     type:String,
@@ -19,7 +28,7 @@ Rep:{
     required:true,
 },
 
-Height:{
+Position:{
     type:String,
     required:true,
 },
@@ -31,6 +40,10 @@ System:{
 Type:{
     type:String,
     required:true,
+},
+Status:{
+    type:String,
+    required:false
 }
 })
     module.exports = mongoose.model('info', InfoSchema);
