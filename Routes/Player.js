@@ -4,7 +4,8 @@ const router = express()
 const Info = require('../model/Info')
 const User = require('../model/User')
 const auth = require('../middleware/auth');
-
+const config = require('config');
+const { check, validationResult } = require('express-validator');
 
 router.get('/',auth,(req,res)=>{
     Info.find().then(info=>{
@@ -43,9 +44,25 @@ router.get('/user',auth, async (req,res)=>{
 
 
 
-router.post('/',auth,async (req,res)=>{
+router.post('/',  [
+    check('Archetype', 'Archetype is required').exists(),
+    check('Overall', 'Overall is required').exists(),
+    check('Winpercentage', 'Winpercentage is required').exists(),
+    check('Rep', 'Rep is required').exists(),
+    check('System', 'System is required').exists(),
+    check('Type', 'Type is required').exists(),
+    check('Position', 'Position is required').exists(),
+        
+
+
+  ],auth,async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
    const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status} = req.body;
-       const Player = await User.findById(req.user.id).select('-password');
+     try{  
+   const Player = await User.findById(req.user.id).select('-password');
        const Ids = await User.findById(req.user.id).select('-password -email -name -date');
        const _id = Ids
 
@@ -61,21 +78,29 @@ router.post('/',auth,async (req,res)=>{
       Status,
       _id
   })
-Infos.save()
-.then(res.json('success'))
 
+
+
+const saver = await Infos.save()
+res.json(saver)
+
+  }
+catch(err){
+    console.log(err.message)
+}
 })
 
-
 router.patch('/:id',auth,async (req,res)=>{
-    try{
-const pl = await Info.findById(req.params.id);    
+try{
+const pl = await Info.findById(req.params.id);  
+if(pl !== null){
  pl.Status = req.body.Status
  const a1 = await pl.save()
  res.json(a1)
-    }
+}  
+ }
     catch(err){
-    console.log(err)
+    console.log(err.message)
 
     }
 })
