@@ -44,6 +44,10 @@ Type:{
 Status:{
     type:String,
     required:false
+},
+Gamertag:{
+    type:String,
+    required:false
 }
 })
     module.exports = mongoose.model('info', InfoSchema);
