@@ -52,7 +52,7 @@ router.post('/',  [
     check('System', 'System is required').exists(),
     check('Type', 'Type is required').exists(),
     check('Position', 'Position is required').exists(),
-        
+    check('Gamertag', 'Gamertag is required').exists(),
 
 
   ],auth,async (req, res) => {
@@ -60,7 +60,7 @@ router.post('/',  [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status} = req.body;
+   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status,Gamertag} = req.body;
      try{  
    const Player = await User.findById(req.user.id).select('-password');
        const Ids = await User.findById(req.user.id).select('-password -email -name -date');
@@ -76,7 +76,8 @@ router.post('/',  [
       Position,
       Player,
       Status,
-      _id
+      _id,
+     Gamertag
   })
 
 
