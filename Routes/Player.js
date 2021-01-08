@@ -4,7 +4,6 @@ const router = express()
 const Info = require('../model/Info')
 const User = require('../model/User')
 const auth = require('../middleware/auth');
-const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 router.get('/',auth,(req,res)=>{
