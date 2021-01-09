@@ -90,6 +90,64 @@ catch(err){
 }
 })
 
+
+router.put('/:id',auth,async (req,res)=>{
+const pl = await Info.findById(req.params.id);  
+
+    try{
+   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status,Gamertag} = req.body;
+   const Player = await User.findById(req.user.id).select('-password');
+       const Ids = await User.findById(req.user.id).select('-password -email -name -date');
+       const _id = Ids
+  const Infos  = {
+      Archetype,
+      Overall,
+      Winpercentage,
+      Rep,
+      System,
+      Type,
+      Position,
+      Player,
+      Status,
+      _id,
+     Gamertag
+  }
+  
+ h = {
+      Archetype,
+      Overall,
+      Winpercentage,
+      Rep,
+      System,
+      Type,
+      Position,
+      Player,
+      Status,
+      _id,
+     Gamertag
+  }
+if(pl !== null){
+
+   pl.Archetype = req.body.Archetype
+   pl.Overall = req.body.Overall
+   pl.Winpercentage = req.body.Winpercentage
+   pl.Rep = req.body.Rep
+   pl.System = req.body.System
+   pl.Type = req.body.Type
+   pl.Position = req.body.Position
+   pl.Status = req.body.Status
+
+ const a1 = await pl.save()
+ res.json(a1)
+}  
+ }
+    catch(err){
+    console.log(err)
+
+    }
+})
+
+
 router.patch('/:id',auth,async (req,res)=>{
 try{
 const pl = await Info.findById(req.params.id);  
