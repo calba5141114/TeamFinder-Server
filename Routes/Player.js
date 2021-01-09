@@ -136,6 +136,7 @@ if(pl !== null){
    pl.Type = req.body.Type
    pl.Position = req.body.Position
    pl.Status = req.body.Status
+   pl.Gamertag = req.body.Gamertag
 
  const a1 = await pl.save()
  res.json(a1)
