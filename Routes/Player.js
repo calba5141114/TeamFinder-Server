@@ -85,7 +85,7 @@ res.json({_message:'Sucessfully updated'})
 
   }
 catch(err){
-    res.json(err.message)
+    res.json(err)
 }
 })
 
@@ -142,7 +142,7 @@ if(pl !== null){
 }  
  }
     catch(err){
-res.json(err.message)
+res.json(err)
 
     }
 })
@@ -158,7 +158,7 @@ if(pl !== null){
 }  
  }
     catch(err){
-    console.log(err.message)
+    console.log(err)
 
     }
 })
