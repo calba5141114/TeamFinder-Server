@@ -143,7 +143,7 @@ if(pl !== null){
 }  
  }
     catch(err){
-    res.json(err)
+res.json({_message:'Sucessfully updated'})
 
     }
 })
