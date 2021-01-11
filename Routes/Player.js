@@ -82,7 +82,7 @@ router.post('/',  [
 
 
 const saver = await Infos.save()
-res.json(saver)
+res.json({_message:'Sucessfully updated'})
 
   }
 catch(err){
