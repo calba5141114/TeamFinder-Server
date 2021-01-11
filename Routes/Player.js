@@ -10,7 +10,7 @@ router.get('/',auth,(req,res)=>{
     Info.find().then(info=>{
         res.json(info)
     }).catch(err =>{
-        console.log(err)
+        res.json(err)
 
     })
 
@@ -21,7 +21,7 @@ router.get('/:id',auth,(req,res)=>{
     Info.findById(req.params.id).then(info=>{
         res.json(info)
     }).catch(err =>{
-        console.log(err)
+        res.json(err)
 
     })
 
@@ -86,7 +86,7 @@ res.json(saver)
 
   }
 catch(err){
-    console.log(err.message)
+    res.json(err.message)
 }
 })
 
@@ -143,7 +143,7 @@ if(pl !== null){
 }  
  }
     catch(err){
-    console.log(err)
+    res.json(err)
 
     }
 })
