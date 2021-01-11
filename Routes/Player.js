@@ -138,7 +138,7 @@ if(pl !== null){
    pl.Gamertag = req.body.Gamertag
 
  const a1 = await pl.save()
- res.json({message:'Sucessfully Updated'})
+ res.json({_message:'Sucessfully Updated'})
 }  
  }
     catch(err){
