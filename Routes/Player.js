@@ -53,7 +53,6 @@ router.post('/',  [
     check('Position', 'Position is required').exists(),
     check('Gamertag', 'Gamertag is required').exists(),
 
-
   ],auth,async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -139,11 +138,11 @@ if(pl !== null){
    pl.Gamertag = req.body.Gamertag
 
  const a1 = await pl.save()
- res.json(a1)
+ res.json({message:'Sucessfully Updated'})
 }  
  }
     catch(err){
-res.json({_message:'Sucessfully updated'})
+res.json(err.message)
 
     }
 })
