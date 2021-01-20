@@ -16,6 +16,16 @@ router.get('/',auth,(req,res)=>{
 
 })
 
+router.post('/add-freind',auth,(req,res)=>{
+    Info.find().then(info=>{
+        res.json(info)
+    }).catch(err =>{
+        res.json(err)
+
+    })
+
+})
+
 
 router.get('/:id',auth,(req,res)=>{
     Info.findById(req.params.id).then(info=>{
@@ -93,38 +103,8 @@ catch(err){
 router.put('/:id',auth,async (req,res)=>{
 const pl = await Info.findById(req.params.id);  
 
-    try{
-   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status,Gamertag} = req.body;
-   const Player = await User.findById(req.user.id).select('-password');
-       const Ids = await User.findById(req.user.id).select('-password -email -name -date');
-       const _id = Ids
-  const Infos  = {
-      Archetype,
-      Overall,
-      Winpercentage,
-      Rep,
-      System,
-      Type,
-      Position,
-      Player,
-      Status,
-      _id,
-     Gamertag
-  }
-  
- h = {
-      Archetype,
-      Overall,
-      Winpercentage,
-      Rep,
-      System,
-      Type,
-      Position,
-      Player,
-      Status,
-      _id,
-     Gamertag
-  }
+    try{  
+
 if(pl !== null){
 
    pl.Archetype = req.body.Archetype
