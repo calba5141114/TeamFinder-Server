@@ -40,15 +40,11 @@ router.post(
       let user = await User.findOne({email})
 
       if (!user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+        return res.json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
       const isMatch = await bcrypt.compare(password, user.password)
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+        return res.json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
 
  const payload = {
@@ -69,6 +65,7 @@ router.post(
     } catch (err) {
       res.json(err);
       res.status(500).send('Server error');
+      
     }
   }
 );
