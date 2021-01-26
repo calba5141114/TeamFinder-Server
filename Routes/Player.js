@@ -68,7 +68,7 @@ router.post('/',  [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status,Gamertag,Bio,Youtube,Instagram,Twitter} = req.body;
+   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status,Gamertag,Bio,Youtube,Instagram,Twitter,Twitch} = req.body;
      try{  
    const Player = await User.findById(req.user.id).select('-password');
        const Ids = await User.findById(req.user.id).select('-password -email -name -date');
@@ -89,7 +89,8 @@ router.post('/',  [
      Bio,
      Twitter,
      Youtube,
-     Instagram
+     Instagram,
+     Twitch
   })
 
 
@@ -124,6 +125,7 @@ if(pl !== null){
    pl.Youtube = req.body.Youtube
    pl.Twitter = req.body.Twitter
    pl.Instagram = req.body.Instagram
+   pl.Twitch = req.body.Twitch
 
 
  const a1 = await pl.save()

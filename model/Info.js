@@ -64,6 +64,10 @@ Youtube:{
 Instagram:{
     type:String,
     required:false
+},
+Twitch:{
+    type:String,
+    required:false
 }
 
 })
