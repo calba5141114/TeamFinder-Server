@@ -68,7 +68,7 @@ router.post('/',  [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status,Gamertag,Bio} = req.body;
+   const {Archetype,Overall,Winpercentage,Rep,Position,System,Type,Status,Gamertag,Bio,Youtube,Instagram,Twitter} = req.body;
      try{  
    const Player = await User.findById(req.user.id).select('-password');
        const Ids = await User.findById(req.user.id).select('-password -email -name -date');
@@ -86,7 +86,10 @@ router.post('/',  [
       Status,
       _id,
      Gamertag,
-     Bio
+     Bio,
+     Twitter,
+     Youtube,
+     Instagram
   })
 
 
@@ -118,6 +121,10 @@ if(pl !== null){
    pl.Status = req.body.Status
    pl.Gamertag = req.body.Gamertag
    pl.Bio = req.body.Bio
+   pl.Youtube = req.body.Youtube
+   pl.Twitter = req.body.Twitter
+   pl.Instagram = req.body.Instagram
+
 
  const a1 = await pl.save()
  res.json({_message:'Sucessfully Updated'})
