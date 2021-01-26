@@ -47,11 +47,24 @@ Status:{
 },
 Gamertag:{
     type:String,
-    required:false
+    required:true
 },
 Bio:{
     type:String,
+    required:true
+},
+Twitter:{
+    type:String,
+    required:false
+},
+Youtube:{
+    type:String,
+    required:false
+},
+Instagram:{
+    type:String,
     required:false
 }
+
 })
     module.exports = mongoose.model('info', InfoSchema);
