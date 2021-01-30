@@ -8,6 +8,10 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../model/User');
 
+
+
+
+
 // @route    GET api/auth
 // @desc     Get user by token
 // @access   Private
@@ -20,6 +24,56 @@ router.get('/', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+/// send user id to email address
+// get put user.password = hashed then save
+
+
+
+router.get('/verify',async (req, res,next) => {
+  try{
+
+  const token = req.header('authorization');
+
+    jwt.verify(token, config.get('jwtSecret'), (error, decoded) => {
+      if (error) {
+        return res.json('This link has expired');
+      }
+      else{
+       
+      }
+    });
+  } catch (err) {
+    res.json(err)
+  }
+})
+
+
+router.post('/reset',async (req, res,next) => {
+  try{
+
+  const password = req.body.password
+  const id = req.body.id
+      
+console.log('worked')
+  const user = await User.findById(id).select('-password');
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(password, salt);
+   user.save().then(
+   res.send("Successfully reset password")
+   )
+    
+
+
+  }
+  catch(err){
+   res.json(err)
+  }
+
+
+  })
+
+
+
 
 router.post(
   '/',
