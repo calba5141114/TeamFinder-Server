@@ -15,7 +15,7 @@ const User = require('../model/User');
 // @route    GET api/auth
 // @desc     Get user by token
 // @access   Private
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
@@ -51,31 +51,6 @@ router.get('/verify',async (req, res,next) => {
     res.json(err)
   }
 })
-
-
-router.post('/reset',async (req, res,next) => {
-  try{
-
-  const password = req.body.password
-  const id = req.body.id
-      
-console.log('worked')
-  const user = await User.findById(id).select('-password');
-  const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(password, salt);
-   await user.save()
-   
-   res.json(user)
-
-  }
-  catch(err){
-   res.json(err)
-  }
-
-
-  })
-
-
 
 
 router.post(
