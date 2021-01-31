@@ -39,7 +39,7 @@ router.get('/verify',async (req, res,next) => {
         return res.status(401).json({ msg: error});
       } else {
         req.user = decoded.user;
-        next();
+          res.json("verified")
       }
     });
 
