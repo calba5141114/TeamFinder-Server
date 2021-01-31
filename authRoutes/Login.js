@@ -53,6 +53,35 @@ router.get('/verify',async (req, res,next) => {
 })
 
 
+router.post('/reset',async (req, res,next) => {
+  try{
+
+  const password = req.body.password
+  const id = req.body.id
+      
+console.log('worked')
+  const user = await User.findById(id).select('-password');
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(password, salt);
+   await user.save()
+   
+   res.json(user)
+   
+    
+
+
+  }
+  catch(err){
+   res.json(err)
+  }
+
+
+  })
+
+
+
+
+
 router.post(
   '/',
   [
