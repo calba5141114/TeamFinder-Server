@@ -11,6 +11,7 @@ const cors = require("cors")
 var nodemailer = require('nodemailer');
 const User = require('./model/User')
 const jwt = require('jsonwebtoken');
+const config = require('config');
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -64,7 +65,7 @@ app.post(
 
       const token =  jwt.sign(
         payload,
-        'jwtSecret',
+   config.get('jwtSecret'),
         { expiresIn: '5m' }
         )
 

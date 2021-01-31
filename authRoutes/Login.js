@@ -36,12 +36,17 @@ router.get('/verify',async (req, res,next) => {
 
     jwt.verify(token, config.get('jwtSecret'), (error, decoded) => {
       if (error) {
-        return res.json('This link has expired');
-      }
-      else{
-       
+        return res.status(401).json({ msg: error});
+      } else {
+        req.user = decoded.user;
+        next();
       }
     });
+
+
+
+
+
   } catch (err) {
     res.json(err)
   }
