@@ -63,11 +63,9 @@ console.log('worked')
   const user = await User.findById(id).select('-password');
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(password, salt);
-   user.save().then(
-   res.send("Successfully reset password")
-   )
-    
-
+   await user.save()
+   
+   res.json(user)
 
   }
   catch(err){
