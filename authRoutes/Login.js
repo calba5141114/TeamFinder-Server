@@ -7,7 +7,8 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../model/User');
-
+var twilio = require('twilio');
+var client = new twilio('ACcb30be54deb48c716ce72711f27c807c', 'd810a695cec20b55770e59dff647fc0d');
 
 
 
@@ -136,6 +137,18 @@ router.post(
       res.json({token});
     }
    );
+
+
+
+client.messages.create({
+  to: '6146157699',
+  from: '+13614706123',
+  body: `Hey ${user} user has signed up!`
+});
+
+
+
+
    
     } catch (err) {
       res.json(err);
