@@ -110,7 +110,7 @@ router.post(
     try {
 
       let user = await User.findOne({email})
-      let users = await User.findOne({email}).select('-password -id -date ');
+      let users = await User.findOne({email}).select('-password -_id -date -__v ');
 
       if (!user) {
         return res
