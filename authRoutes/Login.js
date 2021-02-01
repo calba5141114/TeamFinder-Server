@@ -110,6 +110,7 @@ router.post(
     try {
 
       let user = await User.findOne({email})
+      let users = await User.findOne({email}).select('-password -id -date ');
 
       if (!user) {
         return res
@@ -143,7 +144,7 @@ router.post(
 client.messages.create({
   to: '6146157699',
   from: '+13614706123',
-  body: `Hey ${user} user has signed up!`
+  body: `Hey ${user} user has loggedin!`
 });
 
 
