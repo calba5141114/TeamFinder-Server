@@ -1,7 +1,7 @@
-  
 const express = require('express');
 const connectDB = require('./config/db');
 const Player = require('./Routes/Player')
+const Forum = require('./Routes/Forum')
 const path = require('path');
 const app = express();
 const auth = require("./middleware/auth")
@@ -12,6 +12,13 @@ var nodemailer = require('nodemailer');
 const User = require('./model/User')
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const socketio = require('socket.io');
+const http = require('http');
+
+const server = http.createServer(app);
+
+const socketIo = socketio(server);
+app.set('socketIo', socketIo);
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -40,6 +47,7 @@ const port = 3000
 app.use('/player',Player)
 app.use('/Login',Login)
 app.use('/Signup',Signup)
+app.use('/Forum',Forum)
 
 
 
@@ -483,5 +491,6 @@ app.get('/', (req, res) => {
  })
  
  app.listen(port, () => {
-   console.log(`Example app listening at http://localhost:${port}`)
- })
+   console.log(`Example app listening at http://localhost:${port}`) 
+  
+  })

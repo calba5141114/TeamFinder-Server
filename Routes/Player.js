@@ -3,6 +3,8 @@ const { model } = require('mongoose')
 const router = express()
 const Info = require('../model/Info')
 const User = require('../model/User')
+const Message = require('../model/Messaging')
+
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
@@ -46,11 +48,6 @@ router.get('/user',auth, async (req,res)=>{
     res.json(err)
     }
 })
-
-
-
-
-
 
 
 router.post('/',  [

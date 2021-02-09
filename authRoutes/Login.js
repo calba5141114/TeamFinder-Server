@@ -28,8 +28,9 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/email', async (req, res) => {
   try {
-    const user = await User.find().select('-password -name -date -id -_id -__v');
-    res.json(user);
+    let user = await User.find()
+    
+    res.json(user.toString());
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
