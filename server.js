@@ -1,63 +1,61 @@
-const express = require('express');
-const connectDB = require('./config/db');
-const Player = require('./Routes/Player')
-const Forum = require('./Routes/Forum')
-const path = require('path');
+const express = require("express");
+const connectDB = require("./config/db");
+const Player = require("./Routes/Player");
+const Forum = require("./Routes/Forum");
+const path = require("path");
 const app = express();
-const auth = require("./middleware/auth")
-const Login = require('./authRoutes/Login')
-const Signup = require('./authRoutes/Signup')
-const cors = require("cors")
-var nodemailer = require('nodemailer');
-const User = require('./model/User')
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const socketio = require('socket.io');
-const http = require('http');
+const Login = require("./authRoutes/Login");
+const Signup = require("./authRoutes/Signup");
+const cors = require("cors");
+var nodemailer = require("nodemailer");
+const User = require("./model/User");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const Socket = require("./Socket.js");
 
-const server = http.createServer(app);
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
 
-const socketIo = socketio(server);
-app.set('socketIo', socketIo);
-
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'teamfinder2k@gmail.com',
-    pass: 'Ahmed180@@'
-  }
+io.on("connection", function (socket) {
+  console.log("yoo");
 });
 
-try{
-    connectDB();
+// http.listen(5000, function () {
+//   console.log("listening on *:4000");
+// });
 
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "teamfinder2k@gmail.com",
+    pass: "Ahmed180@@",
+  },
+});
+
+try {
+  connectDB();
+} catch (err) {
+  console.log(err);
 }
-catch(err){
-    console.log(err)
-}
-app.use(cors())
+app.use(cors());
 
 app.use(express.json());
 app.get("/", express.static(path.join(__dirname, "./public")));
 
-const port = 3000
+const port = 3000;
 
+app.use("/player", Player);
+app.use("/Login", Login);
+app.use("/Signup", Signup);
+app.use("/Forum", Forum);
 
-
-app.use('/player',Player)
-app.use('/Login',Login)
-app.use('/Signup',Signup)
-app.use('/Forum',Forum)
-
-
-
-app.get('/live',(req,res)=>{
-    var mailOptions = {
-  from: 'teamfinder.team',
-  to: 'barreahmed600@gmail.com , ahmedbarre600@gmail.com',
-  preheader:"Were Live!",
-  subject: 'Welcome', 
-  html:`) <div class="es-wrapper-color" style="background-color:#F4F4F4"> 
+app.get("/live", (req, res) => {
+  var mailOptions = {
+    from: "teamfinder.team",
+    to: "barreahmed600@gmail.com , ahmedbarre600@gmail.com",
+    preheader: "Were Live!",
+    subject: "Welcome",
+    html: `) <div class="es-wrapper-color" style="background-color:#F4F4F4"> 
    <!--[if gte mso 9]>
 			<v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
 				<v:fill type="tile" color="#f4f4f4"></v:fill>
@@ -237,55 +235,41 @@ app.get('/live',(req,res)=>{
        </table></td> 
      </tr> 
    </table> 
-  </div>  )`
-}
+  </div>  )`,
+  };
 
-
-  res.json('Check your email for password reset link')
-return transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
+  res.json("Check your email for password reset link");
+  return transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 });
 
-})
+app.post("/forgot", async (req, res) => {
+  const { email, password } = req.body;
 
-app.post(
-  '/forgot',async (req, res) => {
+  let user = await User.findOne({ email });
 
-    const { email, password } = req.body;
+  if (!user) {
+    return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+  }
 
-      let user = await User.findOne({email})
+  const payload = {
+    user: {
+      id: user.id,
+    },
+  };
 
-      if (!user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
-      }
-
-
-
-
-          const payload = {
-        user: {
-          id: user.id
-        }
-      };
-
-      const token =  jwt.sign(
-        payload,
-   config.get('jwtSecret'),
-        { expiresIn: '5m' }
-        )
+  const token = jwt.sign(payload, config.get("jwtSecret"), { expiresIn: "5m" });
 
   var mailOptions = {
-  from: 'barreahmed600@gmail.com',
-  to: email,
-  subject: 'Password reset', 
-  html:
-  (`
+    from: "barreahmed600@gmail.com",
+    to: email,
+    subject: "Password reset",
+    html: `
   
   <div class="es-wrapper-color" style="background-color:#F4F4F4"> 
    <!--[if gte mso 9]>
@@ -470,27 +454,23 @@ app.post(
    </table> 
   </div>  
   
-  `)
-};
+  `,
+  };
 
-res.json('Check your email for password reset link')
-return transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
+  res.json("Check your email for password reset link");
+  return transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 });
-    } 
-  
-);
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
-app.get('/', (req, res) => {
-   res.send('Hello World!')
- })
- 
- app.listen(port, () => {
-   console.log(`Example app listening at http://localhost:${port}`) 
-  
-  })
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
