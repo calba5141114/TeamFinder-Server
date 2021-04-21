@@ -10,7 +10,7 @@ const auth = require('../middleware/auth');
 
 router.get('/messaging',auth, async (req,res)=>{
     try{
-    const Messages = await Message.find();
+    const Messages = await Message.find().lean();
     res.json(Messages)
     }
     catch(err){
