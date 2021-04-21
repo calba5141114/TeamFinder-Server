@@ -1,20 +1,18 @@
 const mongoose = require('mongoose');
 
 const MessageSchema = new mongoose.Schema({
-
   name: {
     type: String,
     required: true
   },
-
-    date: {
+  date: {
     type: String,
     required: true,
   },
-content:{
-    type:String,
-    required:true
-}
+  content: {
+    type: String,
+    required: true
+  }
 
-})
-    module.exports = mongoose.model('Message', MessageSchema);
+}, { timestamps: true, toJSON: { virtuals: true } })
+module.exports = mongoose.model('Message', MessageSchema);

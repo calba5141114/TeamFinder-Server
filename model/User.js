@@ -15,11 +15,21 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   date: {
     type: Date,
     default: Date.now,
   },
-});
+},
+  { timestamps: true, toJSON: { virtuals: true } });
+
+
+// UserSchema.pre('save', async function () {
+//   try {
+//     //const hash = <hash-goes-here>
+//     this.password = hash;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
 
 module.exports = mongoose.model("user", UserSchema);
